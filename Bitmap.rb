@@ -3,13 +3,21 @@ class Bitmap
 
     def read_file()
         # Opening a file
+        begin
         fileobject = File.open("text.txt", "r"); 
         # Reading the first n characters from a file
-        file=fileobject.read()
-        fileobject.close();
-        @file=file.gsub(' ', "")
-        @size=file.length()
-        puts @file
+        rescue Errno::ENOENT  => e
+            puts "Caught the exception: #{e}"
+            exit -1
+        else
+            file=fileobject.read()
+            fileobject.close();
+            @file=file.gsub(' ', "")
+            @size=file.length()
+            puts @file
+
+        end
+        
     end
     def create_Bitmap(column,row)
         @column,@row=column,row
@@ -22,11 +30,12 @@ class Bitmap
         end       
     end
     def clear()
-        @array=Array.new(file[@column].to_i) do
-            Array.new(file[@row].to_i) do
-              @array[i][j]="O"
+        for i in (0...array.length)
+            for j in (0...array[i].length)
+             array[i][j]="O"
             end
-        end
+            puts
+           end
     end
 
     def horizontal(index)
@@ -59,44 +68,36 @@ class Bitmap
 
 
     def show()
-        array.each_with_index do |sub_array, i|
-            array.each_with_index do |item, j|
-              print "#{array[i][j]} "
+        for i in (0...array.length)
+            for j in (0...array[i].length)
+             print "#{array[i][j]} "
             end
             puts
-        end
+           end
     end
 
     def check()
 
         for index in 0..@size
-            if @file[index]=='I'
-             
+            x=@file[index]
+            case x
+            when 'I'
                 total_rows=file[index+2].to_i
                 total_cols=file[index+1].to_i
                 create_Bitmap(total_cols,total_rows)
-            end
-            if @file[index]=='H'
+            when 'H'
                 horizontal(index)
-                
-            end
-            if @file[index]=='V'
+            when 'V'
                vertical(index)
-            end
-            if @file[index]=="L"
+            when "L"
                 col=file[index+1].to_i 
-                col+=-1
-                row=file[index+2].to_i
+                 col+=-1
+                 row=file[index+2].to_i
                 row+=-1
-                array[row][col]=file[index+3]
-            
-            end
-            if @file[index]=="C"
+                @array[row][col]=file[index+3]
+            when "C"
                 clear()
-            
-            end
-
-            if @file[index]=='S'
+            when "S"
                 show()
             end
 
@@ -109,8 +110,8 @@ class Bitmap
         flag=true
         flag1=true
         for index in 0..@size
-
-            if @file[index]=='I'
+            case @file[index]
+            when 'I'
                 if flag==false
                     
                     puts "Bitmap is Already initialized"
@@ -138,8 +139,8 @@ class Bitmap
                 end
 
                 flag=false
-            end
-            if @file[index]=='H'
+            
+            when 'H'
                 col=@file[index+1].to_i 
                 col+=-1
                 col1=@file[index+2].to_i
@@ -149,6 +150,7 @@ class Bitmap
                 puts row
                 if flag==true
                     puts "Array is not initialized yet"
+                    breaks
 
                 end
 
@@ -171,8 +173,9 @@ class Bitmap
             if @file[index]=='V'
                 if flag==true
                     puts "Array is not initialized yet"
-
-                endecho "# RubyBitmap" >> README.md
+                    flag1=false
+                    break
+                end
                 col=@file[index+1].to_i 
                 col+=-1
         
