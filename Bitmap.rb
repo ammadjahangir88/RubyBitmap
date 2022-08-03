@@ -134,7 +134,7 @@ class Bitmap
              print "#{array[i][j]} "
             end
             puts
-        end
+           end
     end
 
     def check()
@@ -427,4 +427,5 @@ bit.read_file()
 
 
 bit.error_validation()
+
 puts "hello World"
