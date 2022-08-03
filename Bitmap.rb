@@ -12,7 +12,7 @@ class Bitmap
         else
             file=fileobject.read()
             fileobject.close();
-            @file=file.gsub(' ', "")
+            @file=file
             @size=file.length()
             puts @file
 
@@ -39,30 +39,91 @@ class Bitmap
     end
 
     def horizontal(index)
-        col=@file[index+1].to_i 
-        col+=-1
-        col1=@file[index+2].to_i
-        col1+=-1
-        row=@file[index+3].to_i
-        row+=-1
+        row=""
+        col=""
+        col1=""
+
+        index=index+1
+        while file[index]==" "
+            index+=1
+        end
+        while file[index] !=" "
+            col+=file[index]
+            index+=1
+        end
+
+        while file[index]==" "
+            index+=1
+        end
+        while file[index] !=" "
+            col1+=file[index]
+            index+=1
+        end
+        while file[index]==" "
+            index+=1
+        end
+        while file[index] !=" "
+            row+=file[index]
+            index+=1
+        end
+        col=col.to_i
+        col1=col1.to_i
+        row=row.to_i
+        puts col
+        puts col1
         puts row
-        
+        col+=-1
+        col1+=-1
+        row+=-1
+        while file[index]==" "
+            index+=1
+        end
         for i in col..col1
-            @array[row][i]=@file[index+4]
+            @array[row][i]=@file[index]
         end
     end
 
     def vertical(index)
-        col=@file[index+1].to_i 
-        col+=-1
+        col=""
+        row1=""
+        row2=""
+        index=index+1
+        while file[index]==" "
+            index+=1
+        end
+        while file[index] !=" "
+            col+=file[index]
+            index+=1
+        end
 
-        row1=@file[index+2].to_i
+        while file[index]==" "
+            index+=1
+        end
+        while file[index] !=" "
+            row1+=file[index]
+            index+=1
+        end
+        while file[index]==" "
+            index+=1
+        end
+        while file[index] !=" "
+            row2+=file[index]
+            index+=1
+        end
+        col=col.to_i
+        row1=row1.to_i
+        row2=row2.to_i
+        col+=-1
         row1+=-1
-        row2=@file[index+3].to_i
         row2+=-1
+
+        while file[index]==" "
+            index+=1
+        end
+
        
         for i in row1..row2
-            @array[i][col]=@file[index+4]
+            @array[i][col]=@file[index]
         end
     end
 
@@ -82,26 +143,71 @@ class Bitmap
             x=@file[index]
             case x
             when 'I'
-                total_rows=file[index+2].to_i
-                total_cols=file[index+1].to_i
+                total_cols=""
+                total_rows=""
+                index=index+1
+                while file[index]==" "
+                index+=1
+                end
+                while file[index] !=" "
+                    total_cols+=file[index]
+                    index+=1
+                end
+
+                while file[index]==" "
+                    index+=1
+                    end
+                while file[index] !=" "
+                    total_rows+=file[index]
+                    index+=1
+                end
+                total_rows=total_rows.to_i
+                total_cols=total_cols.to_i
                 create_Bitmap(total_cols,total_rows)
+
             when 'H'
                 horizontal(index)
             when 'V'
-               vertical(index)
-            when "L"
-                col=file[index+1].to_i 
-                 col+=-1
-                 row=file[index+2].to_i
-                row+=-1
-                @array[row][col]=file[index+3]
-            when "C"
-                clear()
-            when "S"
+                vertical(index)
+
+            when 'L'
+                rows=""
+                cols=""
+                index+=1
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    cols+=file[index]
+                    index+=1
+                end
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    rows+=file[index]
+                    index+=1
+                end
+                while file[index]==" "
+                    index+=1
+                end
+                rows=rows.to_i
+                cols=cols.to_i
+
+                rows+=-1
+                cols+=-1
+
+                @array[rows][cols]=file[index]
+
+
+
+
+            when 'S'
                 show()
+            
             end
-
-
+           
+            
         end
     end
     def error_validation()
@@ -112,48 +218,97 @@ class Bitmap
         for index in 0..@size
             case @file[index]
             when 'I'
-                if flag==false
-                    
+                if !flag
                     puts "Bitmap is Already initialized"
                     flag1=false
                     break;
+                end
+                index+=1
+                while file[index]==" "
+                    index+=1
+                end
+                total_cols=""
+                while flag1
+                    if file[index]==" "
+                        break
+                    elsif '0'<=file[index] && file[index]<='9'
+                        puts total_cols
+                        total_cols+=file[index]
+                        puts 
+                    else
+                        flag1=false
+                        puts "Value of initilizers not correct"
+                    end
+                index=index+1
+                end
+                while file[index]==" "
+                    index+=1
+                end
+                total_rows=""
+                while flag1
+                    if file[index]==" "
+                        break
+                    end
+                    if '0'<=file[index] && file[index]<='9'
+                        total_rows+=file[index]
+                        puts 
+                    else
+                        flag1=false
+                        puts "Value of initilizers not correct"
+                    end
+                    index=index+1
+                end
+                
 
-                end
-                if '0'<=file[index+2] && file[index+2]<='9'
-                    puts 
-                else
-                    flag1=false
-                    puts "Value of initilizers not correct"
-                end
-                if '0'<=file[index+1] && file[index+1]<='9'
-                    puts 
-                else
-                    flag1=false
-                    puts "Value of initilizers not correct"
-                end
-
-                total_rows=file[index+2].to_i
-                total_cols=file[index+1].to_i
+                puts total_rows
+                puts total_cols
+                total_rows=total_rows.to_i
+                total_cols=total_cols.to_i
                 if total_rows>255 || total_cols>255
+                    flag1=false
                     puts "Range out of box"
                 end
 
                 flag=false
-            
             when 'H'
-                col=@file[index+1].to_i 
-                col+=-1
-                col1=@file[index+2].to_i
-                col1+=-1
-                row=@file[index+3].to_i
-                row+=-1
-                puts row
                 if flag==true
                     puts "Array is not initialized yet"
                     breaks
-
                 end
-
+                
+                row=""
+                col=""
+                col1=""
+        
+                index=index+1
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    col+=file[index]
+                    index+=1
+                end
+        
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    col1+=file[index]
+                    index+=1
+                end
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    row+=file[index]
+                    index+=1
+                end
+                col=col.to_i
+                col1=col1.to_i
+                row=row.to_i
+                puts col
+                puts col1
+                puts row
                 if row> total_rows
                     flag1=false
                     puts "Horizontal Ranges not valid"
@@ -169,20 +324,42 @@ class Bitmap
                     puts "Horizontal Ranges not valid"
                     break;
                 end
-            end
-            if @file[index]=='V'
+
+            when "V"
                 if flag==true
                     puts "Array is not initialized yet"
                     flag1=false
                     break
                 end
-                col=@file[index+1].to_i 
-                col+=-1
+                col=""
+                row1=""
+                row2=""
+                index=index+1
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    col+=file[index]
+                    index+=1
+                end
         
-                row1=@file[index+2].to_i
-                row1+=-1
-                row2=@file[index+3].to_i
-                row2+=-1
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    row1+=file[index]
+                    index+=1
+                end
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    row2+=file[index]
+                    index+=1
+                end
+                col=col.to_i
+                row1=row1.to_i
+                row2=row2.to_i
                 if col> total_cols
                     flag1=false
                     puts "Vertical Ranges not valid"
@@ -198,28 +375,55 @@ class Bitmap
                     puts "Vertical Ranges not valid"
                     break;
                 end
-            end
-            if @file[index]=="L"
-                col=file[index+1].to_i 
-                col+=-1
-                row=file[index+2].to_i
-                row+=-1
-                if row>total_rows || col>total_cols
-                    flag1=false
-                    puts "Index Out of Bound"
+            when 'L'
+                rows=""
+                cols=""
+                index+=1
+                while file[index]==" "
+                    index+=1
                 end
-            
-            end
+                while file[index] !=" "
+                    cols+=file[index]
+                    index+=1
+                end
+                while file[index]==" "
+                    index+=1
+                end
+                while file[index] !=" "
+                    rows+=file[index]
+                    index+=1
+                end
+                while file[index]==" "
+                    index+=1
+                end
+                rows=rows.to_i
+                cols=cols.to_i
+
+                if cols> total_cols
+                    flag1=false
+                    puts "L Ranges not valid"
+                    break;
+                end
+                if  rows>total_rows
+                    flag1=false
+                    puts "L Ranges not valid"
+                    break;
+                end
+
+              
+
+
+            end                    
         end
         if flag1
             check()
         end
     end
-   
 end
 
 bit = Bitmap.new()
 
 bit.read_file()
+
 
 bit.error_validation()
