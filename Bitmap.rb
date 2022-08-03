@@ -427,3 +427,5 @@ bit.read_file()
 
 
 bit.error_validation()
+
+puts "hello"
