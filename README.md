@@ -1,5 +1,5 @@
 # RubyBitmap
-Produce a Ruby 2.3 program that simulates a basic interactive bitmap editor. Bitmaps are
+Produce a Ruby 3.1 program that simulates a basic interactive bitmap editor. Bitmaps are
 represented as an M x N matrix of pixels with each element representing a colour.
 #Program input
 The input consists of a file containing a sequence of commands, where a command is
